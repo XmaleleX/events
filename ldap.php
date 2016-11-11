@@ -11,9 +11,9 @@
 <?php
 	
 	error_reporting(-1);
-ini_set('display_errors', 'On');
-	$dn = "OU=example Boardrooms,DC=example,DC=local";
-	
+	ini_set('display_errors', 'On');
+	$dn = "OU=example company,DC=example,DC=local";
+
 	 $attributes = array("displayname", "l");
 
     $filter = "(cn=*)";
@@ -45,6 +45,7 @@ ini_set('display_errors', 'On');
 <?php
 	error_reporting(-1);
 	ini_set('display_errors', 'On');
+	
 	$dn="OU=General,OU=example Head Office,DC=example,DC=local";
 	$attributes = array("displayname", "1");
 	$filter = "(cn=*)";
@@ -136,57 +137,6 @@ ini_set('display_errors', 'On');
 	}
 	*/
 	?>
-
-<?php
-
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-//echo "starting";
-function creds(){
-	$host = 'localhost';
-	$password = 'P@ssword321';
-	$username = 'root';
-	$baseName = 'example_intranet';
-	
-	$connection = new PDO("mysql:host=$host;dbname=$baseName", $username, $password);
-	return $connection;
-}
-
-function dbConnection($sql_statement){
-	$conn = creds();
-	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$stmt = $conn->prepare($sql_statement);
-	
-	$stmt->execute();
-	$results = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-	$results = $stmt->fetchAll();
-	
-	return $results;
-}
-
-function getResults(){
-	$sql = "SELECT * from _posts";
-	try{
-		foreach(dbConnection($sql) as $row){
-			if($row['post_type'] == "page" && $row['post_title'] != "Auto Draft"){
-				if($row['post_parent'] == 0){
-					echo $row['post_title'].$row['post_title']."<br>";
-					
-				}
-			}
-		}
-	}catch(PDOException $e) {
-		echo "Error: " . $e->getMessage();
-	}
-	echo "<br><br><br>Done!!!";
-	$conn = null;
-}
-getResults();
-
-echo "hello world from php";
-
-
-?>
 
 
 
